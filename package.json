@@ -1,0 +1,24 @@
+{
+  "name": "garter",
+  "version": "1.0.0",
+  "description": "A Snake app built with JavaScript on Terminal",
+  "main": "index.js",
+  "dependencies": {
+    "blessed": "^0.1.81"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iKnowJavaScript/garter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iKnowJavaScript/garter/issues"
+  },
+  "homepage": "https://github.com/iKnowJavaScript/garter#readme"
+}
