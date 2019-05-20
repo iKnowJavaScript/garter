@@ -32,13 +32,13 @@ Garter.prototype.reset = function() {
     this.snake.push({ x: i + 1, y: 0 });
   }
 
-  this.dot = {};
+  this.maize = {};
   this.score = 0;
   this.currentDirection = 'right';
   this.timer = null;
 
-  // Generate the first dot before the game begins
-  this.generateDot();
+  // Generate the first maize before the game begins
+  this.generateMaize();
   this.display.resetScore();
   this.display.render();
 };
@@ -78,7 +78,7 @@ Garter.prototype.changeDirection = function(_, key) {
  * Set the velocity of the snake based on the current direction. Create a new
  * head by adding a new segment to the beginning of the snake array,
  * increasing by one velocity. Remove one item from the end of the array to
- * make the snake move, unless the snake collides with a dot - then increase
+ * make the snake move, unless the snake collides with a maize - then increase
  * the score and increase the length of the snake by one.
  *
  */
@@ -91,19 +91,19 @@ Garter.prototype.move = function() {
     y: this.snake[0].y + directions[this.currentDirection].y
   };
 
-  // targeting all cases for dot, especially the sides
-  var mixDotX = this.dot.x - 1;
-  var maxDotX = this.dot.x + 1;
+  // targeting all cases for maize, especially the sides
+  var mixMaizeX = this.maize.x - 1;
+  var maxMaizeX = this.maize.x + 1;
 
   this.snake.unshift(head);
-  // If the snake eats a dot, increase the score and generate a new dot
+  // If the snake eats a maize, increase the score and generate a new maize
   if (
-    inRange(this.snake[0].x, mixDotX, maxDotX) &&
-    this.snake[0].y === this.dot.y
+    inRange(this.snake[0].x, mixMaizeX, maxMaizeX) &&
+    this.snake[0].y === this.maize.y
   ) {
-    this.score++;
+    this.score += 3;
     this.display.updateScore(this.score);
-    this.generateDot();
+    this.generateMaize();
   } else {
     // Otherwise, slither
     this.snake.pop();
@@ -115,22 +115,22 @@ Garter.prototype.generateRandomPixel = function(min, max) {
   return Math.round(Math.random() * (max - min) + min);
 };
 
-Garter.prototype.generateDot = function() {
-  // Generate a dot at a random x/y coordinate
+Garter.prototype.generateMaize = function() {
+  // Generate a maize at a random x/y coordinate
   // minus three to make sure it didn't generate on the the game border
-  this.dot.x = this.generateRandomPixel(
+  this.maize.x = this.generateRandomPixel(
     0,
     this.display.gameContainer.width - 3
   );
-  this.dot.y = this.generateRandomPixel(
+  this.maize.y = this.generateRandomPixel(
     1,
     this.display.gameContainer.height - 2
   );
 
-  // If the pixel is on a snake, regenerate the dot
-  this.snake.forEach(segment => {
-    if (segment.x === this.dot.x && segment.y === this.dot.y) {
-      this.generateDot();
+  // If the pixel is on a snake, regenerate the maize
+  this.snake.forEach(pixel => {
+    if (pixel.x === this.maize.x && pixel.y === this.maize.y) {
+      this.generateMaize();
     }
   });
 };
@@ -138,13 +138,13 @@ Garter.prototype.generateDot = function() {
 Garter.prototype.drawSnake = function() {
   // Render each snake segment as a pixel
   this.snake.forEach(segment => {
-    this.display.drawSnake(segment, snakeColor);
+    this.display.drawObject(segment, snakeColor);
   });
 };
 
-Garter.prototype.drawDot = function() {
-  // Render the dot as a pixel
-  this.display.drawDot(this.dot, pixelColor);
+Garter.prototype.drawMaize = function() {
+  // Render the maize as a pixel
+  this.display.drawObject(this.maize, pixelColor);
 };
 
 Garter.prototype.isGameOver = function() {
@@ -160,7 +160,7 @@ Garter.prototype.isGameOver = function() {
   // returns true if it collides with anything else false
   return (
     collide ||
-    // Right wall 
+    // Right wall
     // Added the padding because of the border around the display
     this.snake[0].x >= this.display.gameContainer.width - 3 ||
     // Left wall
@@ -173,7 +173,7 @@ Garter.prototype.isGameOver = function() {
 };
 
 Garter.prototype.showGameOverScreen = function() {
-  this.display.gameOverScreen();
+  this.display.gameOverScreen(this.score);
   this.display.render();
 };
 
@@ -198,7 +198,7 @@ function tick() {
   }
 
   this.display.clearScreen();
-  this.drawDot();
+  this.drawMaize();
   this.move();
   this.drawSnake();
   this.display.render();
@@ -207,6 +207,5 @@ function tick() {
 function inRange(x, min, max) {
   return (x - min) * (x - max) <= 0;
 }
-
 
 module.exports = Garter;

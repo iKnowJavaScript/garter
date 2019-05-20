@@ -8,10 +8,9 @@ function Display() {
   //create display areas
   this.gameBox = this.gameDisplay();
   this.scoreBox = this.scoreDisplay();
-  this.gameOverBox = this.gameOverDisplay();
 
   // to get box width and height
-  this.gameContainer = this.blessed.box(this.gameBox)
+  this.gameContainer = this.blessed.box(this.gameBox);
   this.scoreContainer = this.blessed.box(this.scoreBox);
 }
 
@@ -27,7 +26,7 @@ Display.prototype.gameDisplay = function() {
       bg: 'black'
     },
     border: {
-      type: 'line', //bold
+      type: 'line' //bold
     }
   };
 };
@@ -47,7 +46,7 @@ Display.prototype.scoreDisplay = function() {
   };
 };
 
-Display.prototype.gameOverDisplay = function() {
+Display.prototype.gameOverDisplay = function(score) {
   return {
     parent: this.screen,
     top: 'center',
@@ -60,8 +59,8 @@ Display.prototype.gameOverDisplay = function() {
     },
     tags: true,
     valign: 'middle', // vertical text align
-    content: `{center}Game Over! \n\n Press enter to try again{/center}`,
-    style: { fg: 'white', bg: 'magenta' },
+    content: `{center}Game Over! \n\n Your Score is ${score}\n\n  Press Enter to try again  {/center}`,
+    style: { fg: 'white', bg: 'green' },
     hoverEffects: {
       bg: 'green'
     }
@@ -75,21 +74,7 @@ Display.prototype.eventHandlers = function(keyPress, quit, enter) {
   this.screen.key(['enter'], enter);
 };
 
-Display.prototype.drawSnake = function(coord, color) {
-  this.blessed.box({
-    parent: this.gameContainer,
-    top: coord.y,
-    left: coord.x,
-    width: 2,
-    height: 1,
-    style: {
-      fg: color,
-      bg: color
-    }
-  });
-};
-
-Display.prototype.drawDot = function(coord, color) {
+Display.prototype.drawObject = function(coord, color) {
   this.blessed.box({
     parent: this.gameContainer,
     top: coord.y,
@@ -109,8 +94,8 @@ Display.prototype.updateScore = function(score) {
 };
 
 // Bring gameOver screen forward
-Display.prototype.gameOverScreen = function() {
-  this.gameContainer = this.blessed.box(this.gameOverBox);
+Display.prototype.gameOverScreen = function(score) {
+  this.gameContainer = this.blessed.box(this.gameOverDisplay(score));
 };
 
 // Set to initial screen
