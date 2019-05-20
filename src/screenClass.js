@@ -11,7 +11,7 @@ function Display() {
   this.gameOverBox = this.gameOverDisplay();
 
   // to get box width and height
-  this.gameContainer = this.blessed.box(this.gameBox);
+  this.gameContainer = this.blessed.box(this.gameBox)
   this.scoreContainer = this.blessed.box(this.scoreBox);
 }
 
@@ -25,6 +25,9 @@ Display.prototype.gameDisplay = function() {
     style: {
       fg: 'black',
       bg: 'black'
+    },
+    border: {
+      type: 'line', //bold
     }
   };
 };
@@ -72,12 +75,26 @@ Display.prototype.eventHandlers = function(keyPress, quit, enter) {
   this.screen.key(['enter'], enter);
 };
 
-Display.prototype.drawPixel = function(coord, color) {
+Display.prototype.drawSnake = function(coord, color) {
   this.blessed.box({
     parent: this.gameContainer,
     top: coord.y,
     left: coord.x,
-    width: 1,
+    width: 2,
+    height: 1,
+    style: {
+      fg: color,
+      bg: color
+    }
+  });
+};
+
+Display.prototype.drawDot = function(coord, color) {
+  this.blessed.box({
+    parent: this.gameContainer,
+    top: coord.y,
+    left: coord.x,
+    width: 2,
     height: 1,
     style: {
       fg: color,

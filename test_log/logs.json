@@ -15,35 +15,24 @@
     {
       "x": 26,
       "y": 0
-    },
-    {
-      "x": 27,
-      "y": 0
-    },
-    {
-      "x": 28,
-      "y": 0
-    },
-    {
-      "x": 29,
-      "y": 0
-    },
-    {
-      "x": 30,
-      "y": 0
-    },
-    {
-      "x": 31,
-      "y": 0
-    },
-    {
-      "x": 32,
-      "y": 0
-    },
-    {
-      "x": 33,
-      "y": 0
     }
   ],
-  "garter": []
+  "garter": [
+    {
+      "x": "55   on dot coordinate width  left to right",
+      "y": "3    on dot coordinate height  top to bottom"
+    },
+    {
+      "x": "On average width is greater than height",
+      "y": 49
+    },
+    {
+      "x": 19,
+      "y": 18
+    },
+    {
+      "x": 19,
+      "y": 18
+    }
+  ]
 }

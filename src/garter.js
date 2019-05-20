@@ -1,15 +1,15 @@
 var saveToLogFile = require('../fs_log');
 
-var gameVelocity = 50;
+var gameVelocity = 60;
 var directions = {
   up: { x: 0, y: -1 },
   down: { x: 0, y: 1 },
   right: { x: 1, y: 0 },
   left: { x: -1, y: 0 }
 };
-var initialSnakeSize = 4;
+var initialSnake = 4;
 var snakeColor = 'green';
-var pixelColor = 'red';
+var pixelColor = 'white';
 
 function Garter(display) {
   this.display = display;
@@ -28,8 +28,8 @@ Garter.prototype.reset = function() {
   // Set up initial state
   this.snake = [];
 
-  for (let i = initialSnakeSize; i >= 0; i--) {
-    this.snake.push({ x: i, y: 0 });
+  for (var i = initialSnake; i >= 0; i--) {
+    this.snake.push({ x: i + 1, y: 0 });
   }
 
   this.dot = {};
@@ -86,15 +86,21 @@ Garter.prototype.move = function() {
   // Move the head forward by one pixel based on velocity
   // snake.x === down & up
   // snake.y === left & right
-  const head = {
+  var head = {
     x: this.snake[0].x + directions[this.currentDirection].x,
     y: this.snake[0].y + directions[this.currentDirection].y
   };
 
-  this.snake.unshift(head);
+  // targeting all cases for dot, especially the sides
+  var mixDotX = this.dot.x - 1;
+  var maxDotX = this.dot.x + 1;
 
+  this.snake.unshift(head);
   // If the snake eats a dot, increase the score and generate a new dot
-  if (this.snake[0].x === this.dot.x && this.snake[0].y === this.dot.y) {
+  if (
+    inRange(this.snake[0].x, mixDotX, maxDotX) &&
+    this.snake[0].y === this.dot.y
+  ) {
     this.score++;
     this.display.updateScore(this.score);
     this.generateDot();
@@ -104,20 +110,21 @@ Garter.prototype.move = function() {
   }
 };
 
-Garter.prototype.generateRandomPixelCoord = function(min, max) {
+Garter.prototype.generateRandomPixel = function(min, max) {
   // Get a random coordinate from 0 to max container height/width
   return Math.round(Math.random() * (max - min) + min);
 };
 
 Garter.prototype.generateDot = function() {
   // Generate a dot at a random x/y coordinate
-  this.dot.x = this.generateRandomPixelCoord(
+  // minus three to make sure it didn't generate on the the game border
+  this.dot.x = this.generateRandomPixel(
     0,
-    this.display.gameContainer.width - 1
+    this.display.gameContainer.width - 3
   );
-  this.dot.y = this.generateRandomPixelCoord(
+  this.dot.y = this.generateRandomPixel(
     1,
-    this.display.gameContainer.height - 1
+    this.display.gameContainer.height - 2
   );
 
   // If the pixel is on a snake, regenerate the dot
@@ -131,13 +138,13 @@ Garter.prototype.generateDot = function() {
 Garter.prototype.drawSnake = function() {
   // Render each snake segment as a pixel
   this.snake.forEach(segment => {
-    this.display.drawPixel(segment, snakeColor);
+    this.display.drawSnake(segment, snakeColor);
   });
 };
 
 Garter.prototype.drawDot = function() {
   // Render the dot as a pixel
-  this.display.drawPixel(this.dot, pixelColor);
+  this.display.drawDot(this.dot, pixelColor);
 };
 
 Garter.prototype.isGameOver = function() {
@@ -153,10 +160,11 @@ Garter.prototype.isGameOver = function() {
   // returns true if it collides with anything else false
   return (
     collide ||
-    // Right wall
-    this.snake[0].x >= this.display.gameContainer.width - 1 ||
+    // Right wall 
+    // Added the padding because of the border around the display
+    this.snake[0].x >= this.display.gameContainer.width - 3 ||
     // Left wall
-    this.snake[0].x <= -1 ||
+    this.snake[0].x <= -3 ||
     // Top wall
     this.snake[0].y >= this.display.gameContainer.height - 1 ||
     // Bottom wall
@@ -195,5 +203,7 @@ function tick() {
   this.drawSnake();
   this.display.render();
 }
+
+
 
 module.exports = Garter;

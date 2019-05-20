@@ -1,12 +1,11 @@
 #!/usr/bin/env node
 
-const Garter = require('./src/garter');
-const Display = require('./src/screenClass');
-const garter = new Garter(new Display());
+var Garter = require('./src/garter');
+var Display = require('./src/screenClass');
+var garter = new Garter(new Display());
 
 // Begin game
 garter.start();
-
 
 // "bin": {
 //   "garter": "./play.js"
@@ -15,4 +14,4 @@ garter.start();
 //   "play": "node play.js"
 // },
 
-    //"test": "echo \"Error: no test specified\" && exit 1"
+//"test": "echo \"Error: no test specified\" && exit 1"
