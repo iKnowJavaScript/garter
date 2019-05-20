@@ -60,7 +60,7 @@ Display.prototype.gameOverDisplay = function(score) {
     tags: true,
     valign: 'middle', // vertical text align
     content: `{center}Game Over! \n\n Your Score is ${score}\n\n  Press Enter to try again  {/center}`,
-    style: { fg: 'white', bg: 'green' },
+    style: { fg: 'white', bg: 'blue' },
     hoverEffects: {
       bg: 'green'
     }
