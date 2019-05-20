@@ -1,14 +1,15 @@
-const GAME_SPEED = 40;
-const DIRECTIONS = {
+var saveToLogFile = require('../fs_log');
+
+var gameVelocity = 50;
+var directions = {
   up: { x: 0, y: -1 },
   down: { x: 0, y: 1 },
   right: { x: 1, y: 0 },
-  left: { x: -1, y
-    : 0 }
+  left: { x: -1, y: 0 }
 };
-const INITIAL_SNAKE_SIZE = 4;
-const SNAKE_COLOR = 'green';
-const DOT_COLOR = 'red';
+var initialSnakeSize = 4;
+var snakeColor = 'green';
+var pixelColor = 'red';
 
 function Garter(display) {
   this.display = display;
@@ -27,8 +28,8 @@ Garter.prototype.reset = function() {
   // Set up initial state
   this.snake = [];
 
-  for (let i = INITIAL_SNAKE_SIZE; i >= 0; i--) {
-    this.snake[INITIAL_SNAKE_SIZE - i] = { x: i, y: 0 };
+  for (let i = initialSnakeSize; i >= 0; i--) {
+    this.snake.push({ x: i, y: 0 });
   }
 
   this.dot = {};
@@ -81,16 +82,20 @@ Garter.prototype.changeDirection = function(_, key) {
  * the score and increase the length of the snake by one.
  *
  */
-Garter.prototype.moveSnake = function() {
+Garter.prototype.move = function() {
   // Move the head forward by one pixel based on velocity
+  // console.log(this.snake);
+  // snake.x === down & up
+  // snake.y === left & right
+  //console.log(this.dot); {x: 1, y: 10}
   const head = {
-    x: this.snake[0].x + DIRECTIONS[this.currentDirection].x,
-    y: this.snake[0].y + DIRECTIONS[this.currentDirection].y
+    x: this.snake[0].x + directions[this.currentDirection].x,
+    y: this.snake[0].y + directions[this.currentDirection].y
   };
 
   this.snake.unshift(head);
 
-  // If the snake lands on a dot, increase the score and generate a new dot
+  // If the snake eats a dot, increase the score and generate a new dot
   if (this.snake[0].x === this.dot.x && this.snake[0].y === this.dot.y) {
     this.score++;
     this.display.updateScore(this.score);
@@ -128,13 +133,13 @@ Garter.prototype.generateDot = function() {
 Garter.prototype.drawSnake = function() {
   // Render each snake segment as a pixel
   this.snake.forEach(segment => {
-    this.display.drawPixel(segment, SNAKE_COLOR);
+    this.display.drawPixel(segment, snakeColor);
   });
 };
 
 Garter.prototype.drawDot = function() {
   // Render the dot as a pixel
-  this.display.drawPixel(this.dot, DOT_COLOR);
+  this.display.drawPixel(this.dot, pixelColor);
 };
 
 Garter.prototype.isGameOver = function() {
@@ -170,13 +175,12 @@ Garter.prototype.tick = function() {
     this.showGameOverScreen();
     clearInterval(this.timer);
     this.timer = null;
-
     return;
   }
 
   this.display.clearScreen();
   this.drawDot();
-  this.moveSnake();
+  this.move();
   this.drawSnake();
   this.display.render();
 };
@@ -185,7 +189,7 @@ Garter.prototype.start = function() {
   if (!this.timer) {
     this.reset();
 
-    this.timer = setInterval(this.tick.bind(this), GAME_SPEED);
+    this.timer = setInterval(this.tick.bind(this), gameVelocity);
   }
 };
 

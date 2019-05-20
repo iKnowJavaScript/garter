@@ -1,3 +1,4 @@
+var saveToLogFile = require('../fs_log');
 var blessed = require('blessed');
 
 function Display() {
@@ -49,7 +50,7 @@ Display.prototype.gameOverDisplay = function() {
     top: 'center',
     left: 'center',
     width: '75%',
-    height: '75%',
+    height: '50%',
     border: {
       type: 'line',
       fg: '#ffffff'
@@ -64,15 +65,11 @@ Display.prototype.gameOverDisplay = function() {
   };
 };
 
-Display.prototype.eventHandlers = function(
-  keyPressHandler,
-  quitHandler,
-  enterHandler
-) {
+Display.prototype.eventHandlers = function(keyPress, quit, enter) {
   // to get key pressed and quit game
-  this.screen.on('keypress', keyPressHandler);
-  this.screen.key(['escape', 'q', 'C-c'], quitHandler);
-  this.screen.key(['enter'], enterHandler);
+  this.screen.on('keypress', keyPress);
+  this.screen.key(['escape', 'q', 'C-c'], quit);
+  this.screen.key(['enter'], enter);
 };
 
 Display.prototype.drawPixel = function(coord, color) {
@@ -101,6 +98,7 @@ Display.prototype.gameOverScreen = function() {
 
 // Set to initial screen
 Display.prototype.clearScreen = function() {
+  //removes gameContainer from its parent
   this.gameContainer.detach();
   this.gameContainer = this.blessed.box(this.gameBox);
 };
