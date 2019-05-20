@@ -84,10 +84,8 @@ Garter.prototype.changeDirection = function(_, key) {
  */
 Garter.prototype.move = function() {
   // Move the head forward by one pixel based on velocity
-  // console.log(this.snake);
   // snake.x === down & up
   // snake.y === left & right
-  //console.log(this.dot); {x: 1, y: 10}
   const head = {
     x: this.snake[0].x + directions[this.currentDirection].x,
     y: this.snake[0].y + directions[this.currentDirection].y
@@ -152,6 +150,7 @@ Garter.prototype.isGameOver = function() {
       segment => segment.x === this.snake[0].x && segment.y === this.snake[0].y
     );
 
+  // returns true if it collides with anything else false
   return (
     collide ||
     // Right wall
@@ -170,7 +169,19 @@ Garter.prototype.showGameOverScreen = function() {
   this.display.render();
 };
 
-Garter.prototype.tick = function() {
+Garter.prototype.start = function() {
+  if (!this.timer) {
+    this.reset();
+
+    this.timer = setInterval(tick.bind(this), gameVelocity);
+  }
+};
+
+Garter.prototype.quit = function() {
+  process.exit(0);
+};
+
+function tick() {
   if (this.isGameOver()) {
     this.showGameOverScreen();
     clearInterval(this.timer);
@@ -183,18 +194,6 @@ Garter.prototype.tick = function() {
   this.move();
   this.drawSnake();
   this.display.render();
-};
-
-Garter.prototype.start = function() {
-  if (!this.timer) {
-    this.reset();
-
-    this.timer = setInterval(this.tick.bind(this), gameVelocity);
-  }
-};
-
-Garter.prototype.quit = function() {
-  process.exit(0);
-};
+}
 
 module.exports = Garter;

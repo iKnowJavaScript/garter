@@ -9,7 +9,7 @@ garter.start();
 
 
 // "bin": {
-//   "snek": "./play.js"
+//   "garter": "./play.js"
 // },
 // "scripts": {
 //   "play": "node play.js"
