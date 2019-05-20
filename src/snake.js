@@ -11,7 +11,7 @@ var initialSnake = 4;
 var snakeColor = 'green';
 var pixelColor = 'white';
 
-function Garter(display) {
+function Snake(display) {
   this.display = display;
 
   this.reset();
@@ -24,7 +24,7 @@ function Garter(display) {
   );
 }
 
-Garter.prototype.reset = function() {
+Snake.prototype.reset = function() {
   // Set up initial state
   this.snake = [];
 
@@ -47,7 +47,7 @@ Garter.prototype.reset = function() {
  * Support WASD and arrow key controls. Update the direction of the snake, and
  * do not allow reversal.
  */
-Garter.prototype.changeDirection = function(_, key) {
+Snake.prototype.changeDirection = function(_, key) {
   if (
     (key.name === 'up' || key.name === 'w') &&
     this.currentDirection !== 'down'
@@ -82,7 +82,7 @@ Garter.prototype.changeDirection = function(_, key) {
  * the score and increase the length of the snake by one.
  *
  */
-Garter.prototype.move = function() {
+Snake.prototype.move = function() {
   // Move the head forward by one pixel based on velocity
   // snake.x === down & up
   // snake.y === left & right
@@ -110,12 +110,12 @@ Garter.prototype.move = function() {
   }
 };
 
-Garter.prototype.generateRandomPixel = function(min, max) {
+Snake.prototype.generateRandomPixel = function(min, max) {
   // Get a random coordinate from 0 to max container height/width
   return Math.round(Math.random() * (max - min) + min);
 };
 
-Garter.prototype.generateMaize = function() {
+Snake.prototype.generateMaize = function() {
   // Generate a maize at a random x/y coordinate
   // minus three to make sure it didn't generate on the the game border
   this.maize.x = this.generateRandomPixel(
@@ -124,7 +124,7 @@ Garter.prototype.generateMaize = function() {
   );
   this.maize.y = this.generateRandomPixel(
     1,
-    this.display.gameContainer.height - 2
+    this.display.gameContainer.height - 4
   );
 
   // If the pixel is on a snake, regenerate the maize
@@ -135,19 +135,19 @@ Garter.prototype.generateMaize = function() {
   });
 };
 
-Garter.prototype.drawSnake = function() {
+Snake.prototype.drawSnake = function() {
   // Render each snake segment as a pixel
   this.snake.forEach(segment => {
     this.display.drawObject(segment, snakeColor);
   });
 };
 
-Garter.prototype.drawMaize = function() {
+Snake.prototype.drawMaize = function() {
   // Render the maize as a pixel
   this.display.drawObject(this.maize, pixelColor);
 };
 
-Garter.prototype.isGameOver = function() {
+Snake.prototype.isGameOver = function() {
   // If the snake collides with itself, end the game
   const collide = this.snake
     // Filter out the head
@@ -166,18 +166,18 @@ Garter.prototype.isGameOver = function() {
     // Left wall
     this.snake[0].x <= -3 ||
     // Top wall
-    this.snake[0].y >= this.display.gameContainer.height - 1 ||
+    this.snake[0].y >= this.display.gameContainer.height - 2 ||
     // Bottom wall
     this.snake[0].y <= -1
   );
 };
 
-Garter.prototype.showGameOverScreen = function() {
+Snake.prototype.showGameOverScreen = function() {
   this.display.gameOverScreen(this.score);
   this.display.render();
 };
 
-Garter.prototype.start = function() {
+Snake.prototype.start = function() {
   if (!this.timer) {
     this.reset();
 
@@ -185,7 +185,7 @@ Garter.prototype.start = function() {
   }
 };
 
-Garter.prototype.quit = function() {
+Snake.prototype.quit = function() {
   process.exit(0);
 };
 
@@ -208,4 +208,4 @@ function inRange(x, min, max) {
   return (x - min) * (x - max) <= 0;
 }
 
-module.exports = Garter;
+module.exports = Snake;

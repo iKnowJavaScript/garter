@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-var Garter = require('./src/garter');
+var Snake = require('./src/snake');
 var Display = require('./src/screenClass');
-var garter = new Garter(new Display());
+var snake = new Snake(new Display());
 
 // Begin game
-garter.start();
+snake.start();
 
 // "bin": {
 //   "garter": "./play.js"
