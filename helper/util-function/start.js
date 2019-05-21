@@ -1,5 +1,8 @@
+var sound = require('./sound');
+
 function start() {
   if (this.isGameOver()) {
+    sound.die();
     this.showGameOverScreen();
     clearInterval(this.timer);
     this.timer = null;

@@ -1,20 +1,24 @@
 var saveToLogFile = require('../fs_log');
 var inRange = require('../helper/util-function/in-range');
 var start = require('../helper/util-function/start');
-
-var gameVelocity = 60;
-var directions = {
-  up: { x: 0, y: -1 },
-  down: { x: 0, y: 1 },
-  right: { x: 1, y: 0 },
-  left: { x: -1, y: 0 }
-};
-var initialSnake = 4;
-var snakeColor = 'green';
-var pixelColor = 'white';
+var sound = require('../helper/util-function/sound');
+// const player = require('play-sound')();
+// function sound() {
+//   player.play('../assets/audio/high.mp3', err => {
+//     if (err) console.log(`Could not play sound: ${err}`);
+//   });
+// }
 
 function Snake(display) {
   this.display = display;
+  this.gameVelocity = 60;
+  this.directions = {
+    up: { x: 0, y: -1 },
+    down: { x: 0, y: 1 },
+    right: { x: 1, y: 0 },
+    left: { x: -1, y: 0 }
+  };
+  this.initialSnake = 4;
 
   this.reset();
 
@@ -30,7 +34,7 @@ Snake.prototype.reset = function() {
   // Set up initial state
   this.snake = [];
 
-  for (var i = initialSnake; i >= 0; i--) {
+  for (var i = this.initialSnake; i >= 0; i--) {
     this.snake.push({ x: i + 1, y: 0 });
   }
 
@@ -45,52 +49,28 @@ Snake.prototype.reset = function() {
   this.display.render();
 };
 
-/**
- * Support WASD and arrow key controls. Update the direction of the snake, and
- * do not allow reversal.
- */
 Snake.prototype.changeDirection = function(_, key) {
-  if (
-    (key.name === 'up' || key.name === 'w') &&
-    this.currentDirection !== 'down'
-  ) {
+  if (key.name === 'up' && this.currentDirection !== 'down') {
     this.currentDirection = 'up';
   }
-  if (
-    (key.name === 'down' || key.name === 's') &&
-    this.currentDirection !== 'up'
-  ) {
+  if (key.name === 'down' && this.currentDirection !== 'up') {
     this.currentDirection = 'down';
   }
-  if (
-    (key.name === 'left' || key.name === 'a') &&
-    this.currentDirection !== 'right'
-  ) {
+  if (key.name === 'left' && this.currentDirection !== 'right') {
     this.currentDirection = 'left';
   }
-  if (
-    (key.name === 'right' || key.name === 'd') &&
-    this.currentDirection !== 'left'
-  ) {
+  if (key.name === 'right' && this.currentDirection !== 'left') {
     this.currentDirection = 'right';
   }
 };
 
-/**
- * Set the velocity of the snake based on the current direction. Create a new
- * head by adding a new segment to the beginning of the snake array,
- * increasing by one velocity. Remove one item from the end of the array to
- * make the snake move, unless the snake collides with a maize - then increase
- * the score and increase the length of the snake by one.
- *
- */
 Snake.prototype.move = function() {
   // Move the head forward by one pixel based on velocity
   // snake.x === down & up
   // snake.y === left & right
   var head = {
-    x: this.snake[0].x + directions[this.currentDirection].x,
-    y: this.snake[0].y + directions[this.currentDirection].y
+    x: this.snake[0].x + this.directions[this.currentDirection].x,
+    y: this.snake[0].y + this.directions[this.currentDirection].y
   };
 
   // targeting all cases for maize, especially the sides
@@ -104,6 +84,7 @@ Snake.prototype.move = function() {
     this.snake[0].y === this.maize.y
   ) {
     this.score += 3;
+    sound.hits(); //play sound
     this.display.updateScore(this.score);
     this.generateMaize();
   } else {
@@ -140,13 +121,13 @@ Snake.prototype.generateMaize = function() {
 Snake.prototype.drawSnake = function() {
   // Render each snake segment as a pixel
   this.snake.forEach(segment => {
-    this.display.drawObject(segment, snakeColor);
+    this.display.drawObject(segment, 'green');
   });
 };
 
 Snake.prototype.drawMaize = function() {
   // Render the maize as a pixel
-  this.display.drawObject(this.maize, pixelColor);
+  this.display.drawObject(this.maize, 'white');
 };
 
 Snake.prototype.isGameOver = function() {
@@ -183,7 +164,7 @@ Snake.prototype.start = function() {
   if (!this.timer) {
     this.reset();
 
-    this.timer = setInterval(start.bind(this), gameVelocity);
+    this.timer = setInterval(start.bind(this), this.gameVelocity);
   }
 };
 
