@@ -1,0 +1,38 @@
+{
+  "head": [
+    {
+      "x": 5,
+      "y": 0
+    },
+    {
+      "x": 24,
+      "y": 0
+    },
+    {
+      "x": 25,
+      "y": 0
+    },
+    {
+      "x": 26,
+      "y": 0
+    }
+  ],
+  "garter": [
+    {
+      "x": "55   on dot coordinate width  left to right",
+      "y": "3    on dot coordinate height  top to bottom"
+    },
+    {
+      "x": "On average width is greater than height",
+      "y": 49
+    },
+    {
+      "x": 19,
+      "y": 18
+    },
+    {
+      "x": 19,
+      "y": 18
+    }
+  ]
+}

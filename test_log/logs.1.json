@@ -1,0 +1,44 @@
+{
+  "garter": [
+    {
+      "x": 5,
+      "y": 0,
+      "way": "Going straight"
+    },
+    {
+      "x": 7,
+      "way": "going down",
+      "y": 4
+    },
+    {
+      "51": "gameContainerHeigth",
+      "61": "gamecontainerWidth"
+    },
+    [
+      {
+        "x": 25,
+        "y": "6 snake"
+      },
+      {
+        "x": 24,
+        "y": 6
+      },
+      {
+        "x": 23,
+        "y": 6
+      },
+      {
+        "x": 22,
+        "y": 6
+      },
+      {
+        "x": 21,
+        "y": 6
+      },
+      {
+        "x": 20,
+        "y": 6
+      }
+    ]
+  ]
+}
