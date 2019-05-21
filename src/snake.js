@@ -1,4 +1,6 @@
 var saveToLogFile = require('../fs_log');
+var inRange = require('../helper/util-function/in-range');
+var start = require('../helper/util-function/start');
 
 var gameVelocity = 60;
 var directions = {
@@ -181,31 +183,12 @@ Snake.prototype.start = function() {
   if (!this.timer) {
     this.reset();
 
-    this.timer = setInterval(tick.bind(this), gameVelocity);
+    this.timer = setInterval(start.bind(this), gameVelocity);
   }
 };
 
 Snake.prototype.quit = function() {
   process.exit(0);
 };
-
-function tick() {
-  if (this.isGameOver()) {
-    this.showGameOverScreen();
-    clearInterval(this.timer);
-    this.timer = null;
-    return;
-  }
-
-  this.display.clearScreen();
-  this.drawMaize();
-  this.move();
-  this.drawSnake();
-  this.display.render();
-}
-
-function inRange(x, min, max) {
-  return (x - min) * (x - max) <= 0;
-}
 
 module.exports = Snake;
