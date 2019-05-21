@@ -9,7 +9,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "play": "node app.js"
+    "garter": "node app.js"
   },
   "repository": {
     "type": "git",
