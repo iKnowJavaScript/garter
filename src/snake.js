@@ -2,12 +2,7 @@ var saveToLogFile = require('../fs_log');
 var inRange = require('../helper/util-function/in-range');
 var start = require('../helper/util-function/start');
 var sound = require('../helper/util-function/sound');
-// const player = require('play-sound')();
-// function sound() {
-//   player.play('../assets/audio/high.mp3', err => {
-//     if (err) console.log(`Could not play sound: ${err}`);
-//   });
-// }
+
 
 function Snake(display) {
   this.display = display;
